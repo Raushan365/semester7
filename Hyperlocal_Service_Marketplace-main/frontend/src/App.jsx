@@ -9,13 +9,15 @@ import Contact from './pages/Contact.jsx'
 import Beauty from './pages/Beauty.jsx'
 import Home from './pages/Home.jsx'
 import WallPanelPage from './pages/WallPanel.jsx'
-// import SalonBookingPage from './pages/SalonBookingPage.jsx'
 import ServicesPage from './pages/ServicesPage.jsx'
 import CartPage from './pages/CartPage.jsx'
-import NotFound from './pages/NotFound' // if you have a 404 page
+import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute';
 import MyOrdersPage from './pages/MyOrdersPage.jsx'
 import ProfilePage from './pages/ProfilePage.jsx'
+import NearbyServices from './pages/NearbyServices.jsx'
+import ServiceBooking from './pages/ServiceBooking.jsx'
+import TrackService from './pages/TrackService.jsx'
 
 function App() {
   const location = useLocation();
@@ -40,7 +42,11 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/my-orders" element={<MyOrdersPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          {/* Add other protected routes here */}
+          <Route path="/nearby-services" element={<NearbyServices />} />
+          <Route path="/book/:providerId" element={<ServiceBooking />} />
+          <Route path="/track/:bookingId" element={<TrackService />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment-completion" element={<PaymentCompletion />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
