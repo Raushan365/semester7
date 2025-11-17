@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ServiceBooking = () => {
   const { providerId } = useParams();
   const navigate = useNavigate();
+  const { createPaymentSession } = useAppContext();
   const [provider, setProvider] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedServices, setSelectedServices] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -54,28 +58,34 @@ const ServiceBooking = () => {
 
   const handleBooking = async () => {
     try {
+      setIsProcessing(true);
+      const total = calculateTotal();
+      
+      // First create the booking
       const bookingData = {
         providerId,
         services: selectedServices,
         scheduledDate: selectedDate,
         scheduledTime: selectedTime,
-        total: calculateTotal()
+        total
       };
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/bookings`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/bookings`,
         bookingData,
         {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+          withCredentials: true
         }
       );
 
-      // Navigate to tracking page
-      navigate(`/track/${response.data.bookingId}`);
+      // Create payment session and redirect to Stripe
+      await createPaymentSession(response.data.bookingId, total);
+      
     } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create booking');
       setError('Failed to create booking');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -182,13 +192,13 @@ const ServiceBooking = () => {
         {/* Booking Button */}
         <button
           onClick={handleBooking}
-          disabled={!selectedDate || !selectedTime || selectedServices.length === 0}
+          disabled={!selectedDate || !selectedTime || selectedServices.length === 0 || isProcessing}
           className={`w-full py-3 px-4 rounded-md text-white font-medium
-            ${(!selectedDate || !selectedTime || selectedServices.length === 0)
+            ${(!selectedDate || !selectedTime || selectedServices.length === 0 || isProcessing)
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700'}`}
         >
-          Confirm Booking
+          {isProcessing ? 'Processing...' : 'Confirm Booking'}
         </button>
       </div>
     </div>

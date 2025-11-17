@@ -124,7 +124,12 @@ const Navbar = () => {
                   <Link to="/profile" className="block px-4 py-2 hover:bg-emerald-50">
                     My Profile
                   </Link>
-                  <Link to="/my-orders" className="block px-4 py-2 hover:bg-emerald-50">
+                  {user?.isAdmin && (
+                    <Link to="/admin/dashboard" className="block px-4 py-2 hover:bg-emerald-50">
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <Link to="/my-bookings" className="block px-4 py-2 hover:bg-emerald-50">
                     Booking History
                   </Link>
                   <button
@@ -206,19 +211,37 @@ const Navbar = () => {
           <div className="flex space-x-4 mt-8">
             {user ? (
               <>
-                <Link
-                  to="/profile"
-                  onClick={toggleMenu}
-                  className="bg-amber-500 text-white px-6 py-2 rounded-full font-medium hover:bg-amber-600 transition shadow"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="border-2 border-amber-300 text-amber-300 px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition"
-                >
-                  Logout
-                </button>
+                <div className="flex flex-col space-y-4">
+                    {user?.isAdmin && (
+                      <Link
+                        to="/admin/dashboard"
+                        onClick={toggleMenu}
+                        className="bg-amber-500 text-white px-6 py-2 rounded-full font-medium hover:bg-amber-600 transition shadow text-center"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
+                  <Link
+                    to="/profile"
+                    onClick={toggleMenu}
+                    className="bg-amber-500 text-white px-6 py-2 rounded-full font-medium hover:bg-amber-600 transition shadow text-center"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/my-bookings"
+                    onClick={toggleMenu}
+                    className="bg-amber-500 text-white px-6 py-2 rounded-full font-medium hover:bg-amber-600 transition shadow text-center"
+                  >
+                    Booking History
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="border-2 border-amber-300 text-amber-300 px-6 py-2 rounded-full font-medium hover:bg-emerald-700 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
               </>
             ) : (
               <>

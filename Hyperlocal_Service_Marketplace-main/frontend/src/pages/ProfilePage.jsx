@@ -8,24 +8,20 @@ const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    avatar: null,
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [previewAvatar, setPreviewAvatar] = useState('');
 
   useEffect(() => {
     if (user) {
       setFormData({
         ...formData,
         name: user.name || '',
-        email: user.email || '',
-        avatar: user.avatar || ''
+        email: user.email || ''
       });
-      setPreviewAvatar(user.avatar || '');
     }
   }, [user]);
 
@@ -37,36 +33,19 @@ const ProfilePage = () => {
     });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({
-        ...formData,
-        avatar: file
-      });
-      setPreviewAvatar(URL.createObjectURL(file));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      if (formData.avatar instanceof File) {
-        formDataToSend.append('avatar', formData.avatar);
-      }
-
-      const { data } = await axiosInstance.put('/user/me', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      const { data } = await axiosInstance.put('/user/me', {
+        name: formData.name,
+        email: formData.email
       });
 
-      setUser(data);
-      toast.success('Profile updated successfully!');
-      setIsEditing(false);
+      if (data.success) {
+        setUser(data.user);
+        toast.success('Profile updated successfully!');
+        setIsEditing(false);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to update profile');
     }
@@ -107,24 +86,11 @@ const ProfilePage = () => {
         <div className="flex flex-col md:flex-row gap-8 mb-8">
           <div className="flex-shrink-0 flex flex-col items-center">
             <div className="relative mb-4">
-              <img
-                src={previewAvatar || '/default-avatar.png'}
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-4 border-emerald-100"
-              />
-              {isEditing && (
-                <label className="absolute bottom-0 right-0 bg-emerald-500 text-white p-2 rounded-full cursor-pointer hover:bg-emerald-600">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                  </svg>
-                </label>
-              )}
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center border-4 border-emerald-100">
+                <span className="text-4xl font-bold text-white">
+                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                </span>
+              </div>
             </div>
             <h2 className="text-xl font-semibold">{user?.name}</h2>
             <p className="text-gray-600">{user?.email}</p>
@@ -193,7 +159,11 @@ const ProfilePage = () => {
                   type="button"
                   onClick={() => {
                     setIsEditing(false);
-                    setPreviewAvatar(user?.avatar || '');
+                    setFormData({
+                      ...formData,
+                      name: user?.name || '',
+                      email: user?.email || ''
+                    });
                   }}
                   className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
                 >

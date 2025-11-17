@@ -23,14 +23,16 @@ export const register = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true, // Prevent JavaScript to access cookie
-      secure: process.env.NODE_ENV === 'production', // use secure cookies in production
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //CSRF protection
+      // Use secure cookies in production only. In development we keep secure=false so cookies work on http://localhost
+      secure: process.env.NODE_ENV === 'production',
+      // For local development, SameSite Lax works well for cross-origin dev on localhost.
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, //Cookie expiration time
     });
 
     return res.json({
       success: true,
-      user: { email: user.email, name: user.name },
+      user: { _id: user._id, email: user.email, name: user.name, isAdmin: user.isAdmin },
     });
   } catch (error) {
     console.log(error.message);
@@ -66,14 +68,14 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", //CSRF protection
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, //Cookie expiration time
     });
 
     return res.json({
       success: true,
-      user: { email: user.email, name: user.name },
+      user: { _id: user._id, email: user.email, name: user.name, isAdmin: user.isAdmin },
     });
   } catch (error) {
     console.log(error.message);
@@ -104,6 +106,86 @@ export const logout = async (req, res) => {
     return res.json({ success: true, message: "Logged Out" });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message});
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Update Profile : /api/user/me
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Update name and email
+    if (name) user.name = name;
+    if (email) {
+      // Check if email already exists for another user
+      const existingUser = await User.findOne({ email, _id: { $ne: userId } });
+      if (existingUser) {
+        return res.status(400).json({ success: false, message: 'Email already in use' });
+      }
+      user.email = email;
+    }
+
+    await user.save();
+
+    // Return updated user without password
+    const updatedUser = await User.findById(userId).select('-password');
+    
+    res.json({ 
+      success: true, 
+      message: 'Profile updated successfully',
+      user: updatedUser
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Change Password : /api/user/change-password
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user._id;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Current password and new password are required' 
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Current password is incorrect' 
+      });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ 
+      success: true, 
+      message: 'Password changed successfully' 
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };

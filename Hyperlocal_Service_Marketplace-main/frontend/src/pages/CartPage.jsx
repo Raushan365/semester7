@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { FiX, FiClock, FiCalendar, FiMapPin, FiPhone, FiShoppingCart } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const CartPage = () => {
   const {
@@ -11,7 +12,8 @@ const CartPage = () => {
     updateQuantity,
     totalPrice,
     clearCart,
-    login
+    login,
+    axios
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ const CartPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!user) {
@@ -38,11 +40,34 @@ const CartPage = () => {
       return;
     }
 
-    // In a real app, this would send the booking to your backend
-    console.log("Booking submitted:", { cart, formData });
-    alert("Booking submitted successfully!");
-    clearCart();
-    navigate("/");
+    try {
+      // Create bookings for each cart item
+      for (const item of cart) {
+        const bookingData = {
+          service: item._id,
+          scheduledDate: formData.date,
+          scheduledTime: formData.time,
+          address: {
+            street: formData.address,
+            city: '',  // Add these fields to the form if needed
+            state: '',
+            zipCode: ''
+          },
+          specialInstructions: formData.instructions,
+          totalAmount: item.price * item.quantity
+        };
+
+        // POST to '/bookings' because axios instance baseURL already includes '/api'
+        await axios.post('/bookings', bookingData);
+      }
+
+      toast.success('Bookings created successfully');
+      clearCart();
+      navigate("/my-bookings");
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to create bookings');
+      console.error('Error creating bookings:', error);
+    }
   };
 
   // Scroll to top on mount
@@ -109,20 +134,20 @@ const CartPage = () => {
               <div className="space-y-4">
                 {cart.map((item) => (
                   <div
-                    key={item.id}
+                    key={item._id}
                     className="flex items-center justify-between py-4 border-b border-gray-200"
                   >
                     <div className="flex items-center">
                       <div className="w-20 h-20 bg-gray-200 rounded-md overflow-hidden">
                         <img
                           src={item.image}
-                          alt={item.name}
+                          alt={item.title}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="ml-4">
                         <h3 className="font-medium text-gray-800">
-                          {item.name}
+                          {item.title}
                         </h3>
                         <p className="text-gray-600 text-sm">{item.duration}</p>
                         <p className="text-emerald-600 font-medium">
@@ -133,21 +158,21 @@ const CartPage = () => {
                     <div className="flex items-center">
                       <div className="flex items-center border border-gray-300 rounded-md">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item._id, item.quantity - 1)}
                           className="px-2 py-1 text-gray-600 hover:bg-gray-100 cursor-pointer"
                         >
                           -
                         </button>
                         <span className="px-2">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item._id, item.quantity + 1)}
                           className="px-2 py-1 text-gray-600 hover:bg-gray-100 cursor-pointer"
                         >
                           +
                         </button>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item._id)}
                         className="ml-4 text-gray-400 hover:text-red-500 cursor-pointer"
                       >
                         <FiX className="h-5 w-5" />

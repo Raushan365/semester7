@@ -1,25 +1,70 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
-import { FiShoppingCart, FiClock, FiCheckCircle } from "react-icons/fi";
+import { FiShoppingCart, FiClock, FiCheckCircle, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const ServicesPage = () => {
-  const { cart, addToCart, searchQuery, setSearchQuery } = useAppContext();
+  const { cart, addToCart, searchQuery, setSearchQuery, axios } = useAppContext();
   const [activeCategory, setActiveCategory] = useState("all");
-  const [filteredServices, setFilteredServices] = useState([]);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
 
-  // Service data with more services and proper image paths
-  const services = [
-    // Plumbing Services
-    {
-      id: 1,
-      name: "Basic Plumbing Repair",
-      category: "plumbing",
-      price: 499,
-      duration: "30-60 mins",
-      description: "Fix leaking pipes, taps, and basic plumbing issues",
-      image: "https://images.unsplash.com/photo-1706033915017-b1313a8e5c18?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
+  // Fetch services from backend and update categories
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const { data } = await axios.get('/services');
+        setServices(data);
+        
+        // Get unique categories from services
+        const uniqueCategories = new Set(data.map(service => service.category));
+        
+        // Category display names mapping
+        const categoryNames = {
+          'home-cleaning': 'Home Cleaning',
+          'appliance-service': 'Appliance Service',
+          'home-repair': 'Home Repair',
+          'home-painting': 'Home Painting',
+          'men-salon': 'Men\'s Salon',
+          'women-salon': 'Women\'s Salon',
+          'spa-women': 'Women\'s Spa',
+          'massage-men': 'Men\'s Massage',
+          'smart-home': 'Smart Home',
+          'ro-purifier': 'RO Purifier',
+          'wall-panel': 'Wall Panel'
+        };
+        
+        // Create categories array with 'all' option first
+        const categoriesArray = [
+          { id: "all", name: "All Services" },
+          ...Array.from(uniqueCategories).map(category => ({
+            id: category,
+            name: categoryNames[category] || category.split('-').map(word => 
+              word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ')
+          }))
+        ];
+
+        setCategories(categoriesArray);
+      } catch (error) {
+        setError('Error fetching services');
+        toast.error('Error fetching services');
+        console.error('Error fetching services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  // Filter services based on category and search query
+  const staticServices = [
     {
       id: 2,
       name: "Bathroom Fitting Installation",
@@ -369,38 +414,31 @@ const ServicesPage = () => {
     }
   ];
 
-  // Categories for filtering
-  const categories = [
-    { id: "all", name: "All Services" },
-    { id: "plumbing", name: "Plumbing" },
-    { id: "electrical", name: "Electrical" },
-    { id: "salon-male", name: "Men's Salon" },
-    { id: "salon-female", name: "Women's Salon" },
-    { id: "carpenter", name: "Carpentry" },
-    { id: "cleaning", name: "Cleaning" },
-    { id: "painting", name: "Painting" },
-    { id: "tech", name: "Tech Services" }
-  ];
-
-  // Filter services based on active category and search query
+  // Initialize services state with static data if not loaded from backend
   useEffect(() => {
-    let filtered = activeCategory === "all"
-      ? services
-      : services.filter(service => service.category === activeCategory);
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(service =>
-        service.name.toLowerCase().includes(query) ||
-        service.description.toLowerCase().includes(query)
-      );
+    if (services.length === 0 && !loading) {
+      setServices(staticServices);
     }
+  }, [services.length, loading]);
 
-    setFilteredServices(filtered);
-  }, [activeCategory, searchQuery]);
+  // Filter services based on category and search query
+  const filteredServices = services.filter(service => {
+    if (activeCategory !== 'all' && service.category !== activeCategory) {
+      return false;
+    }
+    
+    if (searchQuery && !service.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !service.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    
+    return true;
+  });
 
+  // Handle adding service to cart
   const handleAddToCart = (service) => {
     addToCart(service);
+    toast.success(`${service.title} added to cart`);
   };
 
   // Clear search query when leaving the page
@@ -410,6 +448,7 @@ const ServicesPage = () => {
     };
   }, [setSearchQuery]);
 
+  // Clear search function
   const clearSearch = () => {
     setSearchQuery("");
   };
@@ -417,6 +456,7 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
             Professional Home Services
@@ -426,6 +466,28 @@ const ServicesPage = () => {
           </p>
         </div>
 
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto mb-8">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search services..."
+              className="w-full py-2 px-4 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            />
+            <FiSearch className="absolute left-3 top-3 text-gray-400" />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-2 text-gray-400 hover:text-gray-600"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Category Filter */}
         <div className="mb-10">
           <div className="flex flex-wrap justify-center gap-3">
@@ -433,10 +495,11 @@ const ServicesPage = () => {
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${activeCategory === category.id
-                  ? "bg-emerald-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
-                  }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                  activeCategory === category.id
+                    ? "bg-emerald-600 text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+                }`}
               >
                 {category.name}
               </button>
@@ -444,89 +507,109 @@ const ServicesPage = () => {
           </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredServices.map((service) => (
-            <div
-              key={service.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-            >
-              <div className="h-48 bg-gray-200 overflow-hidden">
-                <img
-                  src={service.image}
-                  alt={service.name}
-                  className="w-full h-full object-contain bg-white"
-                />
+        {/* Content Section */}
+        <div>
+          {/* Loading State */}
+          {loading ? (
+            <div className="flex justify-center items-center min-h-[400px]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center bg-red-100 rounded-full h-16 w-16 mb-4">
+                <FiCheckCircle className="h-8 w-8 text-red-400" />
               </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {service.name}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {service.description}
-                </p>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <FiClock className="mr-1" />
-                    <span>{service.duration}</span>
-                  </div>
-                  <div className="text-lg font-bold text-emerald-600">
-                    ₹{service.price}
-                  </div>
-                </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Error Loading Services
+              </h3>
+              <p className="text-gray-500">{error}</p>
+            </div>
+          ) : filteredServices.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center bg-gray-100 rounded-full h-16 w-16 mb-4">
+                <FiCheckCircle className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No services found
+              </h3>
+              <p className="text-gray-500">
+                {searchQuery ? (
+                  <>
+                    No services match your search for "{searchQuery}".<br />
+                    Try different keywords or browse all services.
+                  </>
+                ) : (
+                  "Try selecting a different category or check back later for new services"
+                )}
+              </p>
+              {searchQuery && (
                 <button
-                  onClick={() => handleAddToCart(service)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md font-medium flex items-center justify-center cursor-pointer transition-colors"
+                  onClick={clearSearch}
+                  className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md font-medium"
                 >
-                  <FiShoppingCart className="mr-2" />
-                  Add to Cart
+                  Clear Search
                 </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* View Cart Button (shown only when cart has items) */}
-        {cart.length > 0 && (
-          <div className="mt-8 text-center">
-            <Link
-              to="/cart"
-              className="inline-flex items-center bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-md font-medium cursor-pointer transition-colors"
-            >
-              <FiShoppingCart className="mr-2" />
-              Proceed to Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-            </Link>
-          </div>
-        )}
-
-        {filteredServices.length === 0 && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center bg-gray-100 rounded-full h-16 w-16 mb-4">
-              <FiCheckCircle className="h-8 w-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No services found
-            </h3>
-            <p className="text-gray-500">
-              {searchQuery ? (
-                <>
-                  No services match your search for "{searchQuery}".<br />
-                  Try different keywords or browse all services.
-                </>
-              ) : (
-                "Try selecting a different category or check back later for new services"
               )}
-            </p>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md font-medium"
-              >
-                Clear Search
-              </button>
-            )}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div>
+              {/* Services Grid */}
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredServices.map((service) => (
+                  <div
+                    key={service._id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  >
+                    <div className="h-48 bg-gray-200 overflow-hidden">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-contain bg-white"
+                      />
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4">
+                        {service.description}
+                      </p>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center text-sm text-gray-500">
+                          <FiClock className="mr-1" />
+                          <span>{service.duration}</span>
+                        </div>
+                        <div className="text-lg font-bold text-emerald-600">
+                          ₹{service.price}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleAddToCart(service)}
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md font-medium flex items-center justify-center cursor-pointer transition-colors"
+                      >
+                        <FiShoppingCart className="mr-2" />
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* View Cart Button (shown only when cart has items) */}
+              {cart.length > 0 && (
+                <div className="mt-8 text-center">
+                  <Link
+                    to="/cart"
+                    className="inline-flex items-center bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-md font-medium cursor-pointer transition-colors"
+                  >
+                    <FiShoppingCart className="mr-2" />
+                    Proceed to Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)} {cart.length === 1 ? 'item' : 'items'})
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
