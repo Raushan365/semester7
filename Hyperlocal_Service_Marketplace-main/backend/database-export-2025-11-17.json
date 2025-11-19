@@ -1,0 +1,536 @@
+{
+  "users": [
+    {
+      "_id": "684da989d42b795daa002b20",
+      "name": "v",
+      "email": "v@gmail.com",
+      "password": "$2b$10$X9mluo0z9CXXHaUenfqX8u878OHWR6JZtSjJIcbKfYk4WtTrWp1B2",
+      "cartItems": {},
+      "__v": 0
+    },
+    {
+      "_id": "684dd1d314a1e847832c791b",
+      "name": "v",
+      "email": "vi@gmail.com",
+      "password": "$2b$10$lwvH3TUnENCAvOtJ6vvp4uDD8CVumCR/gFF3SeQLSYl4ZTm/MqE0m",
+      "cartItems": {
+        "684ee2ef9b546b935bc6f59e": 4
+      },
+      "__v": 0
+    },
+    {
+      "_id": "684fadb4ac91dff92b69393d",
+      "name": "v",
+      "email": "vis@gmail.com",
+      "password": "$2b$10$SG35CBH3GcrjwCuqE0blnOIVfLx6IMamlQ8vHk/BH.IqwxsmSDhH.",
+      "cartItems": {},
+      "__v": 0
+    },
+    {
+      "_id": "685bf70cb6b1fbff87f7336b",
+      "name": "vishal",
+      "email": "vish@gmail.com",
+      "password": "$2b$10$lvJIDCtfVLqJoZE4zUzj3excZFjhm2hGwtsXabqSjUyOTa6M7e6na",
+      "cartItems": {},
+      "__v": 0
+    },
+    {
+      "_id": "685c139343a9e2c95af529ff",
+      "name": "abc",
+      "email": "abc@gmail.com",
+      "password": "$2b$10$stYfhSck0FFyrYOlfebYae9zJ6SryLjyg4LtnY/UDB39s9A6LaF5q",
+      "__v": 0
+    },
+    {
+      "_id": "685e8704a6c6ce58ff13bb14",
+      "name": "vishal saini",
+      "email": "vishal12@gmail.com",
+      "password": "$2b$10$S0uEfIvvePBv0n9LD/sMUOvvEzGiNlP6anq35K8ut9BsP5ecGmirq",
+      "__v": 0
+    },
+    {
+      "_id": "68677b144f24dc0bb59338cb",
+      "name": "Abhijeet Patil",
+      "email": "abhi@gmail.com",
+      "password": "$2b$10$z.KIWyJyaMmv.hS8vZo8ruabSO6j2D7LHkNpBDl4M4EBr0h.xQWAW",
+      "__v": 0
+    },
+    {
+      "_id": "689582a84531cd76ebad8b87",
+      "name": "vishal",
+      "email": "Vishalsaini96751@gmail.com",
+      "password": "$2b$10$2X9jnusFYoFXUI7O1VNePOCHcHM2uHlWT6fBrhjBoJf2fDOM.Fr3i",
+      "cartItems": {
+        "68511a36635175dc123e8094": 10
+      },
+      "__v": 0
+    },
+    {
+      "_id": "68c26ab62c5fdbac54943625",
+      "name": "vishal",
+      "email": "Vishalsaini9675@gmail.com",
+      "password": "$2b$10$F/2uilQZAT/c/ws3s5N7tupELQCYg2pARXaKgjh4/6mLbaMLnNVCK",
+      "cartItems": {
+        "68511a36635175dc123e8094": 10,
+        "68511998635175dc123e8092": 2,
+        "685118c7635175dc123e808d": 2,
+        "68c26b922c5fdbac549436d2": 1
+      },
+      "__v": 0
+    },
+    {
+      "_id": "6907ae5f7d16de80c79e1015",
+      "name": "Raushan Kumar",
+      "email": "work@gmail.com",
+      "password": "$2b$10$ENU1i89GXffFNsSWbEPQE.jx.akMyc6rYzIR4PrSGROajiM7XGMp2",
+      "__v": 0,
+      "isAdmin": false
+    },
+    {
+      "_id": "691ae7ed7ac3c2d871ec1e15",
+      "name": "Test User",
+      "email": "test.user+123@example.com",
+      "password": "$2b$10$p2XM.aAeI.ayTp1Eoc110uJiVfnF/yyQehBMpdzrqv384fgJ31uAW",
+      "isAdmin": false,
+      "__v": 0
+    },
+    {
+      "_id": "691aeda23601db2c1bb79526",
+      "name": "Administrator",
+      "email": "admin@gmail.com",
+      "password": "$2b$10$feqe8Zs4phSSmCgQIsLUDugDHsEpQnEVQLBhjOojqKkJLeG7Nr7SG",
+      "isAdmin": true,
+      "__v": 0
+    },
+    {
+      "_id": "691aefa07abd5e1c2e3b237d",
+      "name": "Test User",
+      "email": "testuser@example.com",
+      "password": "$2b$10$cmpZXh7EVtoVvgfRQz/Puuh./IkgiJ8pEqY4EFZWJ6NMfi4zmi8Bm",
+      "isAdmin": false,
+      "__v": 0
+    }
+  ],
+  "services": [
+    {
+      "_id": "6907cf95399dc77ec2c4ca70",
+      "title": "Bathroom Fitting Installation",
+      "description": "Install new bathroom fittings including taps, showers, etc.",
+      "category": "home-repair",
+      "price": 1299,
+      "duration": 180,
+      "image": "https://images.unsplash.com/photo-1664227430687-9299c593e3da",
+      "features": [
+        "Professional installation",
+        "Quality fittings",
+        "Expert plumbers"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.530Z",
+      "updatedAt": "2025-11-02T21:39:33.530Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca71",
+      "title": "Water Tank Cleaning",
+      "description": "Professional cleaning of overhead and underground water tanks",
+      "category": "home-cleaning",
+      "price": 999,
+      "duration": 180,
+      "image": "https://images.unsplash.com/photo-1509886246223-cd7fd68f5372",
+      "features": [
+        "Deep cleaning",
+        "Sanitization",
+        "Safety equipment"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca72",
+      "title": "Drain Unclogging",
+      "description": "Clear blocked drains and pipes using professional equipment",
+      "category": "home-repair",
+      "price": 799,
+      "duration": 90,
+      "image": "https://images.unsplash.com/photo-1603815211005-3d9edec72049",
+      "features": [
+        "High-pressure cleaning",
+        "Professional tools",
+        "Quick service"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca73",
+      "title": "Water Heater Installation",
+      "description": "Installation of new water heaters with safety checks",
+      "category": "home-repair",
+      "price": 1499,
+      "duration": 210,
+      "image": "https://images.unsplash.com/photo-1632576201861-28d241b46ceb",
+      "features": [
+        "Safety testing",
+        "Professional installation",
+        "Warranty support"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca74",
+      "title": "Switchboard Repair",
+      "description": "Fixing faulty switches, circuit breakers and fuse boxes",
+      "category": "home-repair",
+      "price": 699,
+      "duration": 90,
+      "image": "https://images.unsplash.com/photo-1623707430101-9e74cefe05e2",
+      "features": [
+        "Safety checks",
+        "Quality parts",
+        "Expert electricians"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca75",
+      "title": "Wiring Installation",
+      "description": "Complete wiring installation for new construction or renovation",
+      "category": "home-repair",
+      "price": 1999,
+      "duration": 300,
+      "image": "https://images.unsplash.com/photo-1650322376275-09fc5c420a5e",
+      "features": [
+        "Safety standards",
+        "Quality materials",
+        "Professional work"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca76",
+      "title": "Light Fixture Installation",
+      "description": "Installation of ceiling lights, chandeliers, and wall lights",
+      "category": "home-repair",
+      "price": 399,
+      "duration": 45,
+      "image": "https://images.unsplash.com/photo-1565874322538-cefe281fd9ed",
+      "features": [
+        "Safe installation",
+        "Expert service",
+        "All fixture types"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.531Z",
+      "updatedAt": "2025-11-02T21:39:33.531Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca77",
+      "title": "Men's Haircut",
+      "description": "Professional haircut with styling for men",
+      "category": "men-salon",
+      "price": 199,
+      "duration": 30,
+      "image": "https://images.unsplash.com/photo-1514336937476-a5b961020a5c",
+      "features": [
+        "Styling",
+        "Hair wash",
+        "Professional tools"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca78",
+      "title": "Men's Shave & Beard Trim",
+      "description": "Traditional shave with hot towel and beard grooming",
+      "category": "men-salon",
+      "price": 299,
+      "duration": 45,
+      "image": "https://images.unsplash.com/photo-1654097803253-d481b6751f29",
+      "features": [
+        "Hot towel service",
+        "Premium products",
+        "Precise trimming"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca79",
+      "title": "Women's Haircut",
+      "description": "Professional haircut with styling for women",
+      "category": "women-salon",
+      "price": 399,
+      "duration": 60,
+      "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df",
+      "features": [
+        "Consultation",
+        "Styling",
+        "Premium products"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7a",
+      "title": "Kitchen Deep Cleaning",
+      "description": "Complete kitchen cleaning including appliances, cabinets, etc.",
+      "category": "home-cleaning",
+      "price": 1299,
+      "duration": 210,
+      "image": "https://images.unsplash.com/photo-1737372805905-be0b91ec86fb",
+      "features": [
+        "Deep cleaning",
+        "Sanitization",
+        "Eco-friendly products"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7b",
+      "title": "Bathroom Deep Cleaning",
+      "description": "Thorough bathroom cleaning including tiles, fixtures, etc.",
+      "category": "home-cleaning",
+      "price": 999,
+      "duration": 150,
+      "image": "https://images.unsplash.com/photo-1711361234578-1845b58b20c0",
+      "features": [
+        "Deep sanitization",
+        "Tile cleaning",
+        "Fixture polishing"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7c",
+      "title": "Full Home Deep Cleaning",
+      "description": "Complete deep cleaning for entire home (2BHK)",
+      "category": "home-cleaning",
+      "price": 3999,
+      "duration": 420,
+      "image": "https://images.unsplash.com/photo-1572229798801-f71d3737680a",
+      "features": [
+        "Complete cleaning",
+        "All rooms covered",
+        "Premium products"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7d",
+      "title": "Smart Home Setup",
+      "description": "Installation and configuration of smart home devices",
+      "category": "smart-home",
+      "price": 2499,
+      "duration": 240,
+      "image": "https://images.unsplash.com/photo-1647077341225-04c8b49ed74d",
+      "features": [
+        "Device setup",
+        "Network configuration",
+        "App setup"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7e",
+      "title": "RO Service",
+      "description": "RO water purifier servicing and filter replacement",
+      "category": "ro-purifier",
+      "price": 599,
+      "duration": 90,
+      "image": "https://images.unsplash.com/photo-1665074208264-235604aa4187",
+      "features": [
+        "Filter replacement",
+        "Quality check",
+        "Performance testing"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    },
+    {
+      "_id": "6907cf95399dc77ec2c4ca7f",
+      "title": "AC Service",
+      "description": "Complete AC servicing including gas refill and cleaning",
+      "category": "appliance-service",
+      "price": 799,
+      "duration": 90,
+      "image": "https://images.unsplash.com/photo-1709432767122-d3cb5326911a",
+      "features": [
+        "Gas check",
+        "Deep cleaning",
+        "Performance optimization"
+      ],
+      "rating": 0,
+      "numberOfRatings": 0,
+      "__v": 0,
+      "createdAt": "2025-11-02T21:39:33.532Z",
+      "updatedAt": "2025-11-02T21:39:33.532Z"
+    }
+  ],
+  "bookings": [
+    {
+      "_id": "6907e12ce2b4fd65c8e515da",
+      "user": "6907ae5f7d16de80c79e1015",
+      "service": "6907cf95399dc77ec2c4ca71",
+      "scheduledDate": "2025-11-14T00:00:00.000Z",
+      "scheduledTime": "09:00-12:00",
+      "status": "work_completed",
+      "paymentStatus": "pending",
+      "address": {
+        "street": "fas",
+        "city": "",
+        "state": "",
+        "zipCode": ""
+      },
+      "totalAmount": 1998,
+      "specialInstructions": "ads",
+      "createdAt": "2025-11-02T22:54:36.685Z",
+      "updatedAt": "2025-11-17T10:01:05.659Z",
+      "__v": 0,
+      "adminNotes": "Accepted for testing",
+      "workCompletionNotes": "Work completed - test payment"
+    },
+    {
+      "_id": "6907e12ce2b4fd65c8e515dc",
+      "user": "6907ae5f7d16de80c79e1015",
+      "service": "6907cf95399dc77ec2c4ca71",
+      "scheduledDate": "2025-11-14T00:00:00.000Z",
+      "scheduledTime": "09:00-12:00",
+      "status": "payment_completed",
+      "paymentStatus": "completed",
+      "address": {
+        "street": "fas",
+        "city": "",
+        "state": "",
+        "zipCode": ""
+      },
+      "totalAmount": 1998,
+      "specialInstructions": "ads",
+      "createdAt": "2025-11-02T22:54:36.750Z",
+      "updatedAt": "2025-11-17T11:04:15.746Z",
+      "__v": 1,
+      "adminNotes": "Booking accepted by admin",
+      "paymentId": "test_payment_1763377455745",
+      "workCompletionImages": []
+    },
+    {
+      "_id": "691aefc37abd5e1c2e3b239b",
+      "user": "691aefa07abd5e1c2e3b237d",
+      "service": "6907cf95399dc77ec2c4ca70",
+      "scheduledDate": "2025-11-20T00:00:00.000Z",
+      "scheduledTime": "10:00",
+      "status": "work_completed",
+      "paymentStatus": "pending",
+      "address": {
+        "street": "123 Test St",
+        "city": "TestCity",
+        "state": "TestState",
+        "zipCode": "12345"
+      },
+      "totalAmount": 1299,
+      "createdAt": "2025-11-17T09:49:55.306Z",
+      "updatedAt": "2025-11-17T10:02:08.862Z",
+      "__v": 0,
+      "adminNotes": "Booking accepted by admin",
+      "workCompletionNotes": "Test work completed"
+    },
+    {
+      "_id": "691afbb6688fcb30e613f973",
+      "user": "6907ae5f7d16de80c79e1015",
+      "service": "6907cf95399dc77ec2c4ca75",
+      "scheduledDate": "2025-11-28T00:00:00.000Z",
+      "scheduledTime": "09:00-12:00",
+      "status": "requested",
+      "workCompletionImages": [],
+      "paymentStatus": "pending",
+      "address": {
+        "street": "hjjj",
+        "city": "",
+        "state": "",
+        "zipCode": ""
+      },
+      "totalAmount": 1999,
+      "specialInstructions": "jk",
+      "createdAt": "2025-11-17T10:40:54.289Z",
+      "updatedAt": "2025-11-17T10:40:54.289Z",
+      "__v": 0
+    }
+  ],
+  "carts": [
+    {
+      "_id": "6907df9e80e3386bfe7b249e",
+      "user": "6907ae5f7d16de80c79e1015",
+      "items": [],
+      "lastUpdated": "2025-11-17T10:40:54.952Z",
+      "createdAt": "2025-11-02T22:47:58.210Z",
+      "updatedAt": "2025-11-17T10:40:54.953Z",
+      "__v": 12
+    },
+    {
+      "_id": "691aedc217c5ef04dadb29da",
+      "user": "691aeda23601db2c1bb79526",
+      "items": [],
+      "lastUpdated": "2025-11-17T09:41:22.342Z",
+      "createdAt": "2025-11-17T09:41:22.345Z",
+      "updatedAt": "2025-11-17T09:41:22.345Z",
+      "__v": 0
+    }
+  ],
+  "exportDate": "2025-11-17T11:50:01.197Z",
+  "exportCount": {
+    "users": 13,
+    "services": 16,
+    "bookings": 4,
+    "carts": 2
+  }
+}
